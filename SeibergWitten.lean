@@ -4,3 +4,6 @@ import SeibergWitten.HarmonicChain
 import SeibergWitten.TauModular
 import SeibergWitten.CentralCharge
 import SeibergWitten.PeriodSeries
+import SeibergWitten.MonodromyStructure
+import SeibergWitten.MetricInvariance
+import SeibergWitten.CurveSingular
