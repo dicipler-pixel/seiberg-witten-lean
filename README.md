@@ -19,6 +19,15 @@ It is a separate project from [geometric-flux-magnetic-charge-lean](https://gith
 5. Structure of the moduli space (through §5.6, monopole condensation and confinement)
 6. The solution of the model
 
+
+## Current Lean
+
+- `SeibergWitten/Sources.lean` — paper citation
+- `SeibergWitten/Monodromy.lean` — printed §5 monodromies (`T`, `S`, `M_∞`, `M_1`, `M_{-1}`, and the (5.13) conjugation)
+- `SeibergWitten/HarmonicChain.lean` — 33 theorems: the charge-lattice monodromy `M(q)`, the pairing/trace identity, continued-fraction neighbor chains, and the algebraic coefficient identities from §6. A literal twin-prime charge lift never gives trace −2. Lean does not prove analytic transport of the periods or physical confinement.
+
+Reproduce the numerical chain table with `python3 scripts/harmonic-chain/check_chains.py`.
+
 ## License
 
 Code is MIT. Text is [CC BY 4.0](LICENSE-CC-BY-4.0.md).
