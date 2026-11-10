@@ -1,0 +1,119 @@
+<canvas id="gl" aria-hidden="true"></canvas>
+<nav class="pill" aria-label="Sections"><a href="#top">Home</a><a href="#sims">Simulations</a><a href="#calc">Calculations</a><a href="#record">Record</a><a href="#manual">Manual</a><button id="share" type="button">Share</button></nav>
+
+<header class="hero" id="top">
+  <div class="vp" id="heroVp" aria-label="3D view of the u-plane, the moduli space of vacua. Drag to turn."></div>
+  <svg id="leaders" aria-hidden="true"></svg>
+  <div class="callout" style="opacity:0"></div><div class="callout" style="opacity:0"></div><div class="callout" style="opacity:0"></div>
+  <div class="hero-title">
+    <div class="kicker">seiberg-witten-lean · interactive explorer</div>
+    <h1>Seiberg and Witten 1994, in Lean</h1>
+    <div class="sub">The moduli space of vacua of N = 2 supersymmetric SU(2) Yang–Mills theory: its metric, its three singular points and their monodromies, the masses of the dyons, and the exact solution, each recomputed beside the statement of the paper.</div>
+    <div class="byline">Jeromie Beasley · Lean 4 / Mathlib library dicipler-pixel/seiberg-witten-lean · source: Nucl. Phys. B426 (1994) 19, hep-th/9407087</div>
+    <div class="legend" aria-label="Grades"><span class="chip g-S"><b>P</b>stated in the paper</span><span class="chip g-V"><b>V</b>recomputed here</span><span class="chip g-H"><b>A</b>asymptotic statement (≈)</span><span class="chip g-L"><b>D</b>numerical device, not in the paper</span><span class="chip g-O"><b>Lean</b>not yet formalized</span></div>
+  </div>
+  <div class="stats" aria-live="polite">
+    <div><span>a(u)</span><b id="s1">0</b></div><div><span>a_D(u)</span><b id="s2">0</b></div><div><span>τ(u)</span><b id="s3">0</b></div>
+    <div><span>monopole mass</span><b id="s4">0</b></div><div><span>dyon mass</span><b id="s5">0</b></div><div><span>4π/g² = Im τ</span><b id="s6" class="eq">0</b></div>
+  </div>
+  <div class="tabs" id="tabs" role="tablist" aria-label="Hero view"><button data-m="light" aria-pressed="true">Lighter of the monopole and the dyon</button><button data-m="coupling" aria-pressed="false">Coupling Im τ</button><button data-m="monopole" aria-pressed="false">Mass of the monopole</button></div>
+  <div class="instruments">
+    <div class="inst"><h4>the periods at the probe</h4><div class="kv" id="i1"></div></div>
+    <div class="inst"><h4>the low-energy coupling</h4><div class="kv" id="i2"></div></div>
+    <div class="inst"><h4>smallest √2|Z|, charges (n_m, n_e)</h4><div class="kv" id="i3"></div></div>
+    <div class="inst"><h4>monodromies, by transport</h4><div class="kv" id="i4"></div></div>
+  </div>
+</header>
+
+<div class="strip" role="toolbar" aria-label="Feed operator and playback">
+  <div class="grp"><span class="lab">Feed · the vacuum</span>
+    <label>Re u <input id="fur" type="range" min="-2.9" max="2.9" step="0.05" value="0.6"><output id="furo">0.6</output></label>
+    <label>Im u <input id="fui" type="range" min="-2.9" max="2.9" step="0.05" value="1.1"><output id="fuio">1.1</output></label></div>
+  <span class="sep"></span>
+  <div class="grp"><span class="lab">Feed · the loops</span>
+    <label>radius about u = ±1 <input id="fr" type="range" min="0.2" max="0.9" step="0.05" value="0.5"><output id="fro">0.5</output></label>
+    <label>radius about both <input id="fR" type="range" min="1.6" max="2.9" step="0.05" value="2.6"><output id="fRo">2.6</output></label></div>
+  <span class="sep"></span>
+  <div class="grp"><span class="lab">Feed · the state</span>
+    <label>n_m <input id="fnm" type="range" min="-2" max="2" step="1" value="1"><output id="fnmo">1</output></label>
+    <label>n_e <input id="fne" type="range" min="-3" max="3" step="1" value="0"><output id="fneo">0</output></label>
+    <label>mass m <input id="fm" type="range" min="0" max="1" step="0.05" value="0.4"><output id="fmo">0.4</output></label></div>
+  <span class="sep"></span>
+  <div class="grp"><button id="play" type="button" aria-pressed="false">Pause</button>
+    <label>speed <input id="fsp" type="range" min="0.25" max="3" step="0.25" value="1"><output id="fspo">1×</output></label>
+    <button id="film" type="button" aria-pressed="false">Film</button><button id="clean" type="button" aria-pressed="false">Clean view</button><button id="check" type="button">Readout check</button></div>
+  <span id="checkSummary">every eye recomputes its number beside the paper’s statement</span>
+</div>
+
+<main>
+<section id="sims">
+  <div class="sh"><h2>Simulations</h2></div>
+  <p class="lead">Twelve eyes in the order of the paper. Every eye is driven by the feed above: a vacuum u = ⟨Tr φ²⟩, the radii of the closed paths, a state with magnetic and electric charges (n_m, n_e), and the mass m that breaks N = 2 to N = 1. In each readout the computed column is obtained from the two integrals of Section 6 and the paper column is the paper’s own formula or value; green means the two agree. The normalization is the paper’s: the singular points are at u = 1, u = −1 and infinity. The Lean chip records that the library does not yet contain the statement.</p>
+  <div class="acts" id="acts"></div>
+</section>
+
+<section id="calc">
+  <div class="sh"><h2>Calculations</h2></div>
+  <p class="lead">The numbers behind the eyes at the present feed.</p>
+  <div class="calc">
+    <div class="card" style="grid-column:1/-1"><h4>The three monodromies</h4><p>Section 5. Each matrix is found by carrying (a_D, a) round a closed path from the base point u = −2i and solving for the matrix; the paper’s matrix is beside it. Green cells agree.</p>
+      <table class="nt"><thead><tr><th>path</th><th>computed</th><th>paper</th><th>trace</th></tr></thead><tbody id="tM"></tbody></table><div class="out" id="oM" style="margin-top:10px"></div></div>
+    <div class="card"><h4>The mass formula at the probe</h4><p>Section 4. Z = a n_e + a_D n_m and M = √2 |Z|, for n_m from 0 to 2 and n_e from −3 to 3, smallest first. The formula does not say which of these states exist.</p>
+      <table class="nt"><thead><tr><th>(n_m, n_e)</th><th>Z</th><th>M</th></tr></thead><tbody id="tS"></tbody></table></div>
+    <div class="card"><h4>Check values of the solution</h4><p>Section 6.</p><div class="out" id="oV"></div></div>
+    <div class="card" style="grid-column:1/-1"><h4>The solution on the real axis, beside the one-loop formulas</h4><p>For real u &gt; 1 the function a is real and a_D is imaginary. The one-loop formulas are the leading terms at large u.</p>
+      <table class="nt"><thead><tr><th>u</th><th>a</th><th>√(2u)</th><th>Im a_D</th><th>√(2u) ln u/π</th><th>Im τ</th></tr></thead><tbody id="tR"></tbody></table></div>
+  </div>
+</section>
+
+<section id="record">
+  <div class="sh"><h2>Record</h2></div>
+  <p class="lead">The state of the Lean library, what this page adds that the paper does not print, and what it leaves out.</p>
+  <div class="manual">
+    <div class="card"><h4>The Lean library today</h4><ul>
+      <li>Repository dicipler-pixel/seiberg-witten-lean at commit 777ea49 (10 November 2026): the source reference and the build configuration. It contains no theorem yet.</li>
+      <li>The check “Lean proof check” passed on that commit. It builds every module against Mathlib and fails on <span class="mono">sorry</span>, <span class="mono">admit</span>, <span class="mono">native_decide</span> or a new axiom.</li>
+      <li>Every panel on this page therefore carries the chip “Lean: not yet formalized”. The numbers here are recomputations, not proofs.</li></ul></div>
+    <div class="card"><h4>Asymptotic statements</h4><ul>
+      <li>a ≈ √(2u) and a_D ≈ i √(2u) ln u/π hold at large u. The next term in a_D is constant beside the logarithm; the value found here is 3 ln 2 − 2.</li>
+      <li>a_D ≈ c₀(u − 1) and a ≈ a₀ + (i/π) a_D ln a_D hold near u = 1, with c₀ = i/2 and a₀ = 4/π from Section 6.</li>
+      <li>θ_eff ≈ −4 arg a holds at large u.</li></ul></div>
+    <div class="card"><h4>Devices of this page, not in the paper</h4><ul>
+      <li>The integrals of Section 6 are evaluated by Gauss–Legendre quadrature at u = 2i and carried to other points and round closed paths by the equation (1 − u²) P″ = P/4, which both integrals satisfy. Panel L checks the equation against the integrals.</li>
+      <li>The curve Im(a_D/a) = 0 is found numerically, one point on each ray from u = 0. The paper states the condition and does not draw the curve.</li>
+      <li>The base point decides which of two conjugate forms the matrix at u = −1 takes. From the lower half-plane it is the paper’s M₋₁ = [−1, 2 ; −2, 3] and the massless dyon has charges (1, −1); from the upper half-plane it is [3, 2 ; −2, −1] and the charges are (1, 1).</li></ul></div>
+    <div class="card"><h4>Not shown</h4><ul>
+      <li>The N = 2 multiplets and the low-energy Lagrangian in superspace (Section 2).</li>
+      <li>The coupling to gravity (Section 3.3).</li>
+      <li>The argument that the three singular points and these monodromies are the only consistent choice, and the uniqueness of the solution (Sections 5.2 and 6).</li>
+      <li>Matter hypermultiplets, which are the subject of the authors’ second paper.</li></ul></div>
+  </div>
+</section>
+
+<section id="manual">
+  <div class="sh"><h2>Manual</h2></div>
+  <div class="manual">
+    <div class="card"><h4>Controls</h4><ul>
+      <li><b>Re u</b> and <b>Im u</b> move the probe, the vacuum at which the periods, the coupling and the masses are computed.</li>
+      <li><b>Radius about u = ±1</b> and <b>radius about both</b> set the closed paths of panels F, G and H. The matrices do not depend on the radii.</li>
+      <li><b>n_m</b> and <b>n_e</b> choose the state of panels C and F; <b>mass m</b> is the perturbation of panel J.</li>
+      <li><b>Pause</b> and <b>speed</b> run the animations. <b>Film</b> moves through the eyes in order.</li>
+      <li><b>Clean view</b> hides the text for recording. <b>Readout check</b> recomputes every eye at fixed settings and lists each value beside the paper’s.</li>
+      <li>Drag a view to turn it; click it, then scroll to zoom; double-click to reset.</li></ul></div>
+    <div class="card"><h4>Reading a panel</h4><ul>
+      <li>The first chip gives the section of the paper. The grade chips say what kind of statement it is.</li>
+      <li>Gold is a; cyan is a_D. Rose marks u = 1 and the monopole; cyan marks u = −1 and the dyon. White is the probe.</li>
+      <li>In the plane of u the real axis runs left to right and the imaginary axis runs away from the viewer.</li>
+      <li>Transport agrees with direct quadrature to about eight figures; matrices of integers are found to better than 10⁻⁹.</li>
+      <li>The eyes explore the paper; they do not grade it.</li></ul></div>
+    <div class="card"><h4>Guide</h4><ul>
+      <li><b>I.</b> The low-energy theory of one photon multiplet has a metric Im τ |da|². Duality acts on (a_D, a) and leaves the metric unchanged.</li>
+      <li><b>II.</b> The mass of every BPS state is √2 |a n_e + a_D n_m|. A state can decay only where a_D/a is real.</li>
+      <li><b>III.</b> The functions a and a_D are not single valued on the u-plane. There are three singular points; at two of them a monopole or a dyon is massless; the monodromies satisfy M₁ M₋₁ = M∞. A mass term makes the monopoles condense.</li>
+      <li><b>IV.</b> The pair (a_D, a) is the pair of periods of a differential on the curve y² = (x² − 1)(x − u).</li></ul></div>
+    <div class="card"><h4>Sources</h4><p>The Lean library and the paper it formalizes.</p>
+      <div class="links"><a href="https://github.com/dicipler-pixel/seiberg-witten-lean">Lean repository</a><a href="https://arxiv.org/abs/hep-th/9407087">arXiv:hep-th/9407087</a><a href="https://doi.org/10.1016/0550-3213(94)90124-4">Nucl. Phys. B426 (1994) 19</a></div></div>
+  </div>
+</section>
+</main>
+<footer>Seiberg and Witten 1994, in Lean · 3D mixer v1 · Jeromie Beasley · built on 3D Mixer Parts v1 · three.js r158</footer>
