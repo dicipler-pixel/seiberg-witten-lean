@@ -3,7 +3,7 @@
   In N=2 Supersymmetric Yang-Mills Theory
   N. Seiberg and E. Witten, hep-th/9407087 (1994), §5.
 
-  The monodromy matrices of the u-plane (their eqs. around (5.1) and §4.4–4.5)
+  The monodromy matrices of the u-plane (their eqs. (5.3), (5.12)–(5.15) and (6.1))
   and the charge vectors of the particles that become massless at each puncture.
 
   This file is self-contained (no Mathlib) so it can be kernel-checked immediately.
